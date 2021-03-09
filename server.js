@@ -17,9 +17,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 io.on('connection', socket =>{
-    socket.on('joinRoom', ({username, room, isWhite}) =>{
-        const player = playerJoin(socket.id, username, room, isWhite);
+    socket.on('joinRoom', ({username, room}) =>{
+        let connected = [];
+        connected =  [getRoomPlayers(room)];
+        let length = connected.length;
+        if(length > 2){
+            return;
+        } 
+        const player = playerJoin(socket.id, username, room);
         socket.join(player.room);
+        io.to(player.room).emit('roomPlayers', {
+            room: player.room,
+            players: getRoomPlayers(player.room)
+          });
     });
     socket.on('move', pos =>{
         const player = getCurrentPlayer(socket.id);
@@ -30,10 +40,16 @@ io.on('connection', socket =>{
         socket.to(player.room).emit('youWin', msg);
     });
     socket.on('disconnect', () => {
-        const user = playerLeave(socket.id);
-        io.to(user.room).emit(
-            'disc',
-            user.id);
+        const player = playerLeave(socket.id);
+        if(player){
+            io.to(player.room).emit(
+                'disc',
+                player.id);
+            io.to(player.room).emit('roomPlayers', {
+                room: player.room,
+                players: getRoomPlayers(player.room)
+              });
+        }
           });
         
 });

@@ -1,11 +1,11 @@
 const players = [];
 
-function playerJoin (id, username, room, isWhite){
+function playerJoin (id, username, room){
     // const turn = false;
     // if(isWhite){
     //     turn = true;
     // }
-    const player = {id, username, room, isWhite};
+    const player = {id, username, room};
     players.push(player);
     return player;
 }
@@ -19,7 +19,7 @@ function playerLeave(id) {
   }
 
   function getRoomPlayers(room) {
-    return players.filter(user => user.room === room);
+    return players.filter(player => player.room === room);
   }
 
 //   function nextTurn(room){
