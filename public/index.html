@@ -4,6 +4,7 @@
     <title>ChessGame</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <link rel="icon" href="https://www.flaticon.com/svg/vstatic/svg/2991/2991436.svg?token=exp=1615378279~hmac=4c233d14d750a49de038d5658586ec1b">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
      <link
       rel="stylesheet"
@@ -11,6 +12,10 @@
       integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=DotGothic16&family=Fascinate&display=swap" rel="stylesheet">
+    
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Fascinate&display=swap" rel="stylesheet">
 
 
     <!-- Bootstrap CSS -->
@@ -23,7 +28,7 @@
       <div class="container justify-content-center text-center">
           <form action="game.html">
             <div class="form-group">
-              <label for="username" class="display-4">Username:</label>
+              <label for="username" class="display-4" id="usernameLabel">Username:</label>
               <input
               class="form-control
                 type="text"
@@ -34,7 +39,7 @@
               />
             </div>
             <div class="form-group">
-              <label for="room" class="display-4">Room:</label>
+              <label for="room" id="roomLabel" class="display-4">Room:</label>
               <select name="room" class="form-control" id="room">
                 <option value="Room1">Room 1</option>
                 <option value="Room2">Room 2</option>
@@ -47,7 +52,8 @@
             <button type="submit" class="btn btn-primary">Join Game</button>
           </form>
     </div>
-
+    <footer id="footer" class="page-footer font-small text-white text-center  p-2">&copy; Vojtěch Binar, IT2
+    </footer>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

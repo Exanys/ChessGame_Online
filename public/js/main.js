@@ -62,9 +62,9 @@ socket.on('start', username => {
 });
 
 socket.on('youWin', msg =>{
-    window.alert(`${String(msg)}`);
+    window.alert(`${String(msg)}.`);
     window.history.back();
-});
+}); 
 
 socket.on('disc', ({id, username}) =>{
   window.alert(`User ${id} disconnected.`);

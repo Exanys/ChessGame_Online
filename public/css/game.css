@@ -2,12 +2,22 @@
     background-color: lightgray;
     justify-content: center;
 }
-#roomname {
+#roomName {
     margin-bottom: 15px;
+    letter-spacing: 10px;
+    font-style: italic;
+    font-family: 'DotGothic16', sans-serif;
 }
 #gameCon{
     background-color: black;
     text-align: left;
     color: lime;
     padding-left: 2px;
+}
+#footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(76, 77, 78);
+    border-radius: 15px 15px 0px 0px;
 }

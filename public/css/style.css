@@ -2,8 +2,27 @@
     justify-content: center;
     background-color:#D4AF37;
 }
+#header{
+    font-family: 'DotGothic16', sans-serif;
+font-family: 'Fascinate', cursive;
+}
 
 #room, #username{
     margin: auto;
     width: 30%;
+    
+}
+#roomLabel, #usernameLabel{
+    margin-top: 30px;
+    letter-spacing: 5px;
+    font-family: 'Akaya Kanadaka', cursive;
+    font-family: 'DotGothic16', sans-serif;
+    font-family: 'Fascinate', cursive;
+}
+#footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(76, 77, 78);
+    border-radius: 15px 15px 0px 0px;
 }

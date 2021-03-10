@@ -5,6 +5,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="https://www.flaticon.com/svg/vstatic/svg/2991/2991436.svg?token=exp=1615378279~hmac=4c233d14d750a49de038d5658586ec1b">
+
      <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
@@ -15,6 +17,8 @@
       href="css/chessboard-1.0.0.css"
       crossorigin="anonymous">
     <link rel="stylesheet" href="./css/game.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
@@ -22,15 +26,17 @@
   <header class='jumbotron jumbotron-fluid bg-secondary p-4'>
     <h1 class='display-4 text-white text-center' id='roomName' >Chess Game room: </h1> 
   </header>
-  <main class='container'>
+  <main class='container' id="main">
   <div class='row'>
   <div class='col-md-9'>
     <div id="myBoard" style="width: 95%"></div>
   </div>
-  <div class='col' id='gameCon'></div>
+  <div class='col-3' id='gameCon'></div>
   </div>
   
   </main>
+  <footer id="footer" class="page-footer font-small text-white  text-center p-2">&copy; Vojtěch Binar, IT2
+  </footer>
 
       
     <!-- Optional JavaScript -->
