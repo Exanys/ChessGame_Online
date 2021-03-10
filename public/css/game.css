@@ -1,0 +1,13 @@
+#body{
+    background-color: lightgray;
+    justify-content: center;
+}
+#roomname {
+    margin-bottom: 15px;
+}
+#gameCon{
+    background-color: black;
+    text-align: left;
+    color: lime;
+    padding-left: 2px;
+}

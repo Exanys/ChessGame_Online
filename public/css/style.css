@@ -1,0 +1,9 @@
+#body{
+    justify-content: center;
+    background-color:#D4AF37;
+}
+
+#room, #username{
+    margin: auto;
+    width: 30%;
+}

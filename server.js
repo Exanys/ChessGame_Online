@@ -34,9 +34,9 @@ io.on('connection', socket =>{
                 room: player.room,
                 players: getRoomPlayers(player.room),
               });
-            socket.to(player.room).emit('opponentConnect', player.id);
+            socket.to(player.room).emit('opponentConnect', player.username);
             if(length > 0){
-                io.in(player.room).emit('start', player.id);
+                io.in(player.room).emit('start', player.username);
             }
             console.log(player);
             console.log(getRoomPlayers(player.room));
@@ -44,8 +44,10 @@ io.on('connection', socket =>{
         
     });
     socket.on('move', pos =>{
+        console.log(pos); 
         const player = getCurrentPlayer(socket.id);
-        io.to(player.room).emit('move', pos);
+        //const username = player.username; 
+        io.to(player.room).emit('move', {move: pos, username: player.username});
     });
     socket.on('gameOver', msg =>{
         const player = getCurrentPlayer(socket.id);
@@ -56,7 +58,7 @@ io.on('connection', socket =>{
         if(player){
             io.to(player.room).emit(
                 'disc',
-                player.id);
+                ({id: player.id, username: player.username}));
             io.to(player.room).emit('roomPlayers', {
                 room: player.room,
                 players: getRoomPlayers(player.room)

@@ -1,7 +1,7 @@
 
 const title = document.getElementById('title');
 const nameOfRoom = document.getElementById('roomName');
-const con = $('#gameCon');
+const con = document.getElementById('gameCon');
 const boardDiv = document.getElementById('myBoard');
 const url_string = window.location.search;
 const urlParams = new URLSearchParams(url_string);
@@ -9,9 +9,10 @@ const username = urlParams.get('username');
 const room = urlParams.get('room');
 
 let turn = false;
+let first = 5;
 let me;
 let connected;
-
+con.innerHTML = `<p>Waiting for another player...</p>`;
 let board = null;
   let game = new Chess();
   let whiteSquareGrey = '#a9a9a9';
@@ -42,17 +43,21 @@ socket.on('roomPlayers', ({room, players}) =>{
  console.log(socket.id);
 });
 
-socket.on('move', move => {
-  movePieces(move);
-  turn = !turn
+socket.on('move', ({move, username}) => {
+  movePieces(move); 
+  writeToConsoleMove(move, username);
+  turn = !turn;
 console.log(turn);});
-socket.on('opponentConnect', (id) => {
+socket.on('opponentConnect', (username) => {
+  first = writeToConsoleCon(username);
   turn = !turn;
 });
 
-socket.on('start', id => {
+socket.on('start', username => {
   me = connected.filter(e => e.id === socket.id);
   config.orientation = me[0].color;
+  if(first == 10 ){con.innerHTML += `<p>Game is ready!!!</p>`;}
+  else{con.innerHTML = `<p>Game is ready!!!</p>`;} 
   board = Chessboard('myBoard', config);
 });
 
@@ -61,8 +66,9 @@ socket.on('youWin', msg =>{
     window.history.back();
 });
 
-socket.on('disc', id =>{
+socket.on('disc', ({id, username}) =>{
   window.alert(`User ${id} disconnected.`);
+  con.innerHTML += `<p>Player ${username} disconnect.</p><p>Game is not ready. Go back.</p>`;
 });
 
 
@@ -131,8 +137,8 @@ function roomName(name){
       console.log(me);
       // do not pick up pieces if the game is over
       if (game.game_over()){
-          socket.emit('gameOver', 'You have won');
-          window.alert('You lose');
+          socket.emit('gameOver', 'You have won.');
+          window.alert('You lose.');
           window.history.back();
           return false;
       } 
@@ -155,9 +161,16 @@ function roomName(name){
   // illegal move
   if (move === null) return 'snapback';
   return socket.emit('move', move);
-
   }
 
+  function writeToConsoleMove (move, player){
+    console.log(move); 
+    con.innerHTML += `<p>Player ${player} moved from ${move.from} to ${move.to}.</p>`;
+  }
+  function writeToConsoleCon(player){
+    con.innerHTML = `<p>Player ${player} connect.</p>`;
+    return 10;
+  }
 
   // while(!turn){
   //   document.addEventListener('click', e => e.preventDefault);
