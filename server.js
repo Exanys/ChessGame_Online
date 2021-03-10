@@ -16,24 +16,36 @@ const {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 io.on('connection', socket =>{
     socket.on('joinRoom', ({username, room}) =>{
-        let connected = [];
-        connected =  [getRoomPlayers(room)];
-        let length = connected.length;
-        if(length > 2){
-            return;
-        } 
-        const player = playerJoin(socket.id, username, room);
-        socket.join(player.room);
-        io.to(player.room).emit('roomPlayers', {
-            room: player.room,
-            players: getRoomPlayers(player.room)
-          });
+        let alreadyConnect = null;
+        alreadyConnect = getRoomPlayers(room);
+        let length = alreadyConnect.length;
+        if(length >  1){
+           socket.emit('fullSize', username);
+        }else{
+            const player = {id: socket.id, username, room, color: null};
+            console.log(player);
+            player.color = length ? 'black' : 'white';
+            playerJoin(player);
+            socket.join(player.room);
+            io.to(player.room).emit('roomPlayers', {
+                room: player.room,
+                players: getRoomPlayers(player.room),
+              });
+            socket.to(player.room).emit('opponentConnect', player.id);
+            if(length > 0){
+                io.in(player.room).emit('start', player.id);
+            }
+            console.log(player);
+            console.log(getRoomPlayers(player.room));
+        }
+        
     });
     socket.on('move', pos =>{
         const player = getCurrentPlayer(socket.id);
-        io.to(player.room).emit('moveOpponent', pos);
+        io.to(player.room).emit('move', pos);
     });
     socket.on('gameOver', msg =>{
         const player = getCurrentPlayer(socket.id);

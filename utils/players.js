@@ -1,11 +1,10 @@
 const players = [];
 
-function playerJoin (id, username, room){
+function playerJoin (player){
     // const turn = false;
     // if(isWhite){
     //     turn = true;
     // }
-    const player = {id, username, room};
     players.push(player);
     return player;
 }

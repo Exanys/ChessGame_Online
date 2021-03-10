@@ -2,42 +2,17 @@
 const title = document.getElementById('title');
 const nameOfRoom = document.getElementById('roomName');
 const con = $('#gameCon');
+const boardDiv = document.getElementById('myBoard');
 const url_string = window.location.search;
 const urlParams = new URLSearchParams(url_string);
 const username = urlParams.get('username');
 const room = urlParams.get('room');
 
+let turn = false;
+let me;
+let connected;
 
-const socket = io();
-
-let players = [];
-
-
-
-
-
-socket.emit('joinRoom', { username, room});
-socket.on('moveOpponent', value => {
-  game.move({from: value[0], to: value[1], promotion: 'q'});
-  board.position(value[2]);
-  turn = !turn});
-socket.on('roomPlayers', ({room, players}) =>{
-  roomName(room);
-  players = [players];
-});
-let length = players.length;
-const color = length > 1 ? 'black' : 'white';
-
-console.log(color);
-let from, to;
-let turn = color == 'white' ? true : false;
-
-function roomName(name){
-  title.innerHTML += ` ${name}`;
-  nameOfRoom.innerHTML += ` ${name}`;
-}
-
-  let board = null;
+let board = null;
   let game = new Chess();
   let whiteSquareGrey = '#a9a9a9';
   let blackSquareGrey = '#696969';
@@ -46,15 +21,64 @@ function roomName(name){
     pieceTheme: '../img/{piece}.png',
     draggable: true,
     position: 'start',
-    orientantion: color,
+    orientation: null,
     onDragStart: onDragStart,
     onMouseoutSquare: onMouseoutSquare,
     onMouseoverSquare: onMouseoverSquare,
-    onDrop: onDrop,
-    onSnapEnd: onSnapEnd
+    onDrop: onDrop
   }
 
-if(turn && (length > 1)){
+
+
+const socket = io();
+
+socket.emit('joinRoom', { username, room});
+socket.on('fullSize', () => { 
+  window.alert('Server is full');
+  window.history.back();
+});
+socket.on('roomPlayers', ({room, players}) =>{
+ connected = players;
+ console.log(socket.id);
+});
+
+socket.on('move', move => {
+  movePieces(move);
+  turn = !turn
+console.log(turn);});
+socket.on('opponentConnect', (id) => {
+  turn = !turn;
+});
+
+socket.on('start', id => {
+  me = connected.filter(e => e.id === socket.id);
+  config.orientation = me[0].color;
+  board = Chessboard('myBoard', config);
+});
+
+socket.on('youWin', msg =>{
+    window.alert(`${String(msg)}`);
+    window.history.back();
+});
+
+socket.on('disc', id =>{
+  window.alert(`User ${id} disconnected.`);
+});
+
+
+
+
+
+function roomName(name){
+  title.innerHTML += ` ${name}`;
+  nameOfRoom.innerHTML += ` ${name}`;
+}
+ roomName(room);
+
+  
+
+
+
   
   
   function removeGreySquares () {
@@ -97,19 +121,23 @@ if(turn && (length > 1)){
   
   
   
-  function onSnapEnd () {
-      board.position(game.fen())
-      socket.emit('move', [from, to, game.fen()]);
+  function movePieces (move) {
+      game.move(move);
+      board.position(game.fen());
     }
     
-  function onDragStart ( piece) {
+  function onDragStart (piece) {
+      if(!turn){return false;} 
+      console.log(me);
       // do not pick up pieces if the game is over
       if (game.game_over()){
           socket.emit('gameOver', 'You have won');
-          window.prompt('You lose');
+          window.alert('You lose');
+          window.history.back();
           return false;
       } 
-      let pick = (color == 'white' ? (/^b/) : (/^w/));
+      let pick = (me[0].color == 'white' ? /^b/ : /^w/);
+      console.log(pick); 
       // only pick up pieces for White
       if (piece.search(pick) !== -1) return false;
     }
@@ -126,30 +154,18 @@ if(turn && (length > 1)){
   
   // illegal move
   if (move === null) return 'snapback';
-  from = source;
-  to = target;
+  return socket.emit('move', move);
+
   }
-}else{
- 
-  }
-  
-  
-  
-  
-  board = Chessboard('myBoard', config);
+
+
+  // while(!turn){
+  //   document.addEventListener('click', e => e.preventDefault);
+  //   }
 
 
 
 
-
-
-socket.on('youWin', msg =>{
-    window.prompt(msg);
-});
-
-socket.on('disc', id =>{
-  window.prompt(`User ${id} disconnected.`);
-});
 
 
 
